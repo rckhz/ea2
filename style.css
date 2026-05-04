@@ -1,0 +1,63 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: black;
+    overflow: hidden;
+    color: white;
+    font-family: "Open Sans", sans-serif;
+}
+h2 {
+    padding: 10px;
+}
+.fundo {
+    background-image: url("fundo1.png");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    backdrop-filter: blur(10px);
+}
+
+.luiz {
+    position: fixed;
+
+
+
+
+
+
+    left: 0;
+    top: 0;
+    transform: translate(50%, 50%) !important;
+    pointer-events: none;
+}
+
+.lantern {
+    width: 280px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.4;
+    
+}
+
+.light {
+    width: 800px;
+    height: 220px;
+    position: absolute;
+    top: -240px;
+    left: 140px;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, rgba(255,255,255,0.25), rgba(0, 0, 0, 0));
+    clip-path: path("M70 0 Q400 30 740 0 L440 240 L360 240 Z");
+    pointer-events: none;
+}
+
+
+                        
