@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', () => {
     const light = document.querySelector('.light');
     const fundo = document.querySelector('.fundo');
     const tracker = document.querySelector('.luiz');
