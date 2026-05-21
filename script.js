@@ -16,15 +16,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const handlePointerDown = (event) => {
         if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
         isDragging = true;
-        lastY = event.clientY;
+        lastX = event.clientX;
         event.target.setPointerCapture(event.pointerId);
     };
 
     const handlePointerMove = (event) => {
         if (isDragging) {
-            const delta = lastY - event.clientY;
-            value += delta * 0.003;
-            lastY = event.clientY;
+            const delta = lastX - event.clientX;
+            value += delta * 0.009;
+            lastX = event.clientX
             updateOpacity();
             return;
         }
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isDragging = false;
         if (event.target.hasPointerCapture && event.target.hasPointerCapture(event.pointerId)) {
             event.target.releasePointerCapture(event.pointerId);
-        }
+        }   
     };
 
     document.addEventListener('pointerdown', handlePointerDown);
