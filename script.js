@@ -1,11 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
     const light = document.querySelector('.light');
-    const fundo = document.querySelector('.fundo');
+    const fundo = document.querySelector('.image');
     const tracker = document.querySelector('.luiz');
+
+    if (tracker) {
+        tracker.style.transform = 'translate(-50%, -82%)';
+    }
 
     let value = 0.5;
     let isDragging = false;
-    let lastY = 0;
+    let lastX = 0;
 
     const updateOpacity = () => {
         value = Math.max(0, Math.min(1, value));
@@ -28,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateOpacity();
             return;
         }
-
+        // imagem acompanha o cursor do mouse
         if (event.pointerType === 'mouse' && tracker) {
             tracker.style.left = `${event.clientX}px`;
             tracker.style.top = `${event.clientY}px`;

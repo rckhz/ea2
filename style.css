@@ -76,60 +76,98 @@ h2 {
 .lantern {
     width: 60%;
     height: auto;
-
     position: absolute;
-    top: 0;
-    left: 0;
-
+    left: 50%;
+    bottom: 8%;
+    transform: translateX(-50%);
     object-fit: contain;
 }
 
 /* luz */
 .light {
     position: absolute;
-
-    left: 50%;
+    left: 70%;
+    top: -53%;
     transform: translateX(-50%);
 
     width: clamp(280px, 120vw, 900px);
     height: clamp(180px, 40vw, 260px);
 
-    top: -85%;
 
     background: linear-gradient(
         to bottom,
-        rgba(255,255,255,0.22),
-        rgba(0,0,0,0)
+        rgba(217, 255, 2, 0.048),
+        rgba(245, 241, 0, 0.404)
     );
 
-    clip-path: path("M70 0 Q400 30 740 0 L440 240 L360 240 Z"); 
+    clip-path: path("M70 0 Q400 30 740 0 L430 240 L356 240 Z"); 
 
     pointer-events: none;
 }
+.image{
+    background-color: rgba(255, 255, 255, 0.1);
+    clip-path: ellipse(40% 25% at 50% 50%);
 
+}
 /* celular */
-@media (max-width: 600px) {
+
+
+/* =========================
+   RESPONSIVO CELULAR
+========================= */
+
+@media (max-width: 768px) {
+
+    body {
+        overflow-x: hidden;
+    }
 
     h2 {
-        font-size: 1.2rem;
+        font-size: 1.3rem;
+        padding-top: 20px;
     }
 
     .guide {
-        font-size: 0.8rem;
-        padding: 8px 14px;
+        width: 85%;
+        font-size: 0.75rem;
+        bottom: 20px;
     }
 
     .luiz {
-        width: 48vw;
-        min-width: 140px;
-        max-width: 210px;
+        width: 180px;
+
+        left: 50%;
+        top: 82%;
+
+        transform: translate(-50%, -50%);
+    }
+
+    .lantern {
+        width: 70%;
+        bottom: 0;
     }
 
     .light {
-        width: 180vw;
-        height: 160px;
+        left: 50%;
+        top: -104%;
 
-        top: -70%;
+        transform: translateX(-50%);
+
+        width: 140vw;
+        height: 240px;
+
         opacity: 0.9;
+
+        clip-path: polygon(
+            45% 100%,
+            28% 0%,
+            72% 0%,
+            55% 100%
+        );
+    }
+
+    .fundo {
+        background-position: center;
+        background-size: cover;
     }
 }
