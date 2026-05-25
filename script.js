@@ -33,10 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         // imagem acompanha o cursor do mouse
-        if (event.pointerType === 'mouse' && tracker) {
+        if (event.pointerType === 'mouse' && tracker ) {
             tracker.style.left = `${event.clientX}px`;
             tracker.style.top = `${event.clientY}px`;
         }
+        
+        
+    
     };
 
     const handlePointerUp = (event) => {

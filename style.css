@@ -81,13 +81,17 @@ h2 {
     bottom: 8%;
     transform: translateX(-50%);
     object-fit: contain;
+
+    /* sempre por cima */
+    z-index: 1;
 }
+
 
 /* luz */
 .light {
     position: absolute;
-    left: 70%;
-    top: -53%;
+    left: 50%;
+    top: -60%;
     transform: translateX(-50%);
 
     width: clamp(280px, 120vw, 900px);
@@ -96,22 +100,37 @@ h2 {
 
     background: linear-gradient(
         to bottom,
-        rgba(217, 255, 2, 0.048),
-        rgba(245, 241, 0, 0.404)
+        rgba(255, 255, 255, 0),
+        rgba(255, 255, 255, 0.39)
     );
 
-    clip-path: path("M70 0 Q400 30 740 0 L430 240 L356 240 Z"); 
+    clip-path: polygon(
+            46% 98%,
+            28% 0%,
+            72% 0%,
+            54% 98%);
 
     pointer-events: none;
+    z-index: 2;
 }
-.image{
-    background-color: rgba(255, 255, 255, 0.1);
-    clip-path: ellipse(40% 25% at 50% 50%);
 
+.fundo1 {
+    position: absolute;
+    left: 50%;
+    /* um pouco acima da lanterna */
+    top: -163%;
+    transform: translateX(-50%);
+
+    width: 800px;
+    height: 600px;
+    background-color: rgb(0, 0, 0);
+
+    /* fundo atrás da lanterna */
+    clip-path: ellipse(50% 46% at 50% 50%);
+    z-index: 0;
+    pointer-events: none;
 }
 /* celular */
-
-
 /* =========================
    RESPONSIVO CELULAR
 ========================= */
@@ -159,15 +178,29 @@ h2 {
         opacity: 0.9;
 
         clip-path: polygon(
-            45% 100%,
+            45% 98%,
             28% 0%,
             72% 0%,
-            55% 100%
+            55% 98%
         );
     }
 
-    .fundo {
-        background-position: center;
-        background-size: cover;
-    }
+    .fundo1 {
+    position: absolute;
+    left: 50%;
+    /* um pouco acima da lanterna */
+    top: -300%;
+    transform: translateX(-50%);
+
+    width: 800px;
+    height: 600px;
+    background-color: rgb(0, 0, 0);
+
+    /* fundo atrás da lanterna */
+    clip-path: ellipse(39% 50% at 50% 50%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+
 }
