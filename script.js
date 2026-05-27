@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const light = document.querySelector('.light');
-    const fundo = document.querySelector('.fundo');
+    const fundo = document.querySelector('.fundo1');
     const tracker = document.querySelector('.luiz');
 
     if (tracker) {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateOpacity = () => {
         value = Math.max(0, Math.min(1, value));
         if (light) light.style.opacity = value;
-        if (fundo) fundo.style.opacity = 1 - value;
+        if (fundo) fundo.style.opacity = value;
     };
 
     const handlePointerDown = (event) => {
@@ -33,20 +33,20 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
         // imagem acompanha o cursor do mouse
-        if (event.pointerType === 'mouse' && tracker ) {
+        if (event.pointerType === 'mouse' && tracker) {
             tracker.style.left = `${event.clientX}px`;
             tracker.style.top = `${event.clientY}px`;
         }
-        
-        
-    
+
+
+
     };
 
     const handlePointerUp = (event) => {
         isDragging = false;
         if (event.target.hasPointerCapture && event.target.hasPointerCapture(event.pointerId)) {
             event.target.releasePointerCapture(event.pointerId);
-        }   
+        }
     };
 
     document.addEventListener('pointerdown', handlePointerDown);
