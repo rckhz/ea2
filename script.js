@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const handlePointerMove = (event) => {
         if (isDragging) {
             const delta = lastX - event.clientX;
-            value += delta * 0.009;
+            value += delta * 0.03;
             lastX = event.clientX
             updateOpacity();
             return;
