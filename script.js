@@ -2,62 +2,151 @@ document.addEventListener('DOMContentLoaded', () => {
     const light = document.querySelector('.light');
     const fundo = document.querySelector('.fundo1');
     const tracker = document.querySelector('.luiz');
+    const joystick = document.getElementById('joystick');
+    const stick = document.getElementById('joystickStick');
+    const btnMais = document.getElementById('btnMais');
+    const btnMenos = document.getElementById('btnMenos');
 
-    if (tracker) {
-        tracker.style.transform = 'translate(-50%, -82%)';
-    }
+    // posição da lanterna (centro do .luiz em px)
+    let posX = window.innerWidth / 2;
+    let posY = window.innerHeight * 0.82;
 
+    const aplicarPosicao = () => {
+        if (!tracker) return;
+        tracker.style.left = `${posX}px`;
+        tracker.style.top = `${posY}px`;
+        tracker.style.transform = 'translate(-50%, -50%)';
+    };
+    aplicarPosicao();
+
+    // ---------- opacidade ----------
     let value = 0.5;
-    let isDragging = false;
-    let lastX = 0;
-
     const updateOpacity = () => {
         value = Math.max(0, Math.min(1, value));
         if (light) light.style.opacity = value;
         if (fundo) fundo.style.opacity = value;
     };
+    updateOpacity();
 
-    const handlePointerDown = (event) => {
-        if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
-        isDragging = true;
-        lastX = event.clientX;
-        event.target.setPointerCapture(event.pointerId);
+    // ---------- joystick ----------
+    let vx = 0;
+    let vy = 0;
+    const VEL_MAX = 7;
+    const raioMax = 45;
+    let joyPointerId = null;
+
+    const atualizarStick = (clientX, clientY) => {
+        const rect = joystick.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        let dx = clientX - cx;
+        let dy = clientY - cy;
+        const dist = Math.hypot(dx, dy);
+        if (dist > raioMax) {
+            dx = (dx / dist) * raioMax;
+            dy = (dy / dist) * raioMax;
+        }
+        stick.style.left = `calc(50% + ${dx}px)`;
+        stick.style.top = `calc(50% + ${dy}px)`;
+        vx = (dx / raioMax) * VEL_MAX;
+        vy = (dy / raioMax) * VEL_MAX;
+        stick.classList.add('ativo');
     };
 
-    const handlePointerMove = (event) => {
-        if (isDragging) {
-            const delta = lastX - event.clientX;
-            value += delta * 0.03;
-            lastX = event.clientX
-            updateOpacity();
-            return;
-        }
-        // imagem acompanha o cursor do mouse
-        if (event.pointerType === 'mouse' && tracker) {
-            tracker.style.left = `${event.clientX}px`;
-            tracker.style.top = `${event.clientY}px`;
-        }
-
-
-
+    const resetarStick = () => {
+        stick.style.left = '50%';
+        stick.style.top = '50%';
+        vx = 0;
+        vy = 0;
+        stick.classList.remove('ativo');
+        joyPointerId = null;
     };
 
-    const handlePointerUp = (event) => {
-        isDragging = false;
-        if (event.target.hasPointerCapture && event.target.hasPointerCapture(event.pointerId)) {
-            event.target.releasePointerCapture(event.pointerId);
+    joystick.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        joyPointerId = e.pointerId;
+        joystick.setPointerCapture(e.pointerId);
+        atualizarStick(e.clientX, e.clientY);
+    });
+
+    joystick.addEventListener('pointermove', (e) => {
+        if (e.pointerId !== joyPointerId) return;
+        atualizarStick(e.clientX, e.clientY);
+    });
+
+    const soltar = (e) => {
+        if (e.pointerId !== joyPointerId) return;
+        if (joystick.hasPointerCapture(e.pointerId)) {
+            joystick.releasePointerCapture(e.pointerId);
         }
+        resetarStick();
+    };
+    joystick.addEventListener('pointerup', soltar);
+    joystick.addEventListener('pointercancel', soltar);
+
+    // loop de movimento
+    const loop = () => {
+        if (vx !== 0 || vy !== 0) {
+            posX = Math.max(0, Math.min(window.innerWidth, posX + vx));
+            posY = Math.max(0, Math.min(window.innerHeight, posY + vy));
+            aplicarPosicao();
+        }
+        requestAnimationFrame(loop);
+    };
+    loop();
+
+    // ---------- botões opacidade ----------
+    const PASSO = 0.06;
+    const ajustar = (delta) => {
+        value += delta;
+        updateOpacity();
     };
 
-    document.addEventListener('pointerdown', handlePointerDown);
-    document.addEventListener('pointermove', handlePointerMove);
-    document.addEventListener('pointerup', handlePointerUp);
-    document.addEventListener('pointercancel', handlePointerUp);
+    // suporte a click + repetição se segurar
+    const ligarBotao = (btn, delta) => {
+        let intervalo = null;
+        let timeout = null;
+        const iniciar = (e) => {
+            e.preventDefault();
+            ajustar(delta);
+            timeout = setTimeout(() => {
+                intervalo = setInterval(() => ajustar(delta), 80);
+            }, 350);
+        };
+        const parar = () => {
+            clearTimeout(timeout);
+            clearInterval(intervalo);
+            timeout = null;
+            intervalo = null;
+        };
+        btn.addEventListener('pointerdown', iniciar);
+        btn.addEventListener('pointerup', parar);
+        btn.addEventListener('pointerleave', parar);
+        btn.addEventListener('pointercancel', parar);
+    };
+    ligarBotao(btnMais, PASSO);
+    ligarBotao(btnMenos, -PASSO);
 
+    const ehMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (ehMouse) {
+      document.addEventListener('pointermove', (e) => {
+          if (e.pointerType !== 'mouse') return;
+          posX = e.clientX;
+          posY = e.clientY;
+          aplicarPosicao();
+      });
+  }
+    
+    // ---------- scroll do mouse (mantido do original) ----------
     document.addEventListener('wheel', (event) => {
         value += event.deltaY < 0 ? 0.06 : -0.06;
         updateOpacity();
     }, { passive: true });
 
-    updateOpacity();
+    // ---------- resize ----------
+    window.addEventListener('resize', () => {
+        posX = Math.min(posX, window.innerWidth);
+        posY = Math.min(posY, window.innerHeight);
+        aplicarPosicao();
+    });
 });

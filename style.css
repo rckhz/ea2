@@ -128,6 +128,94 @@ h2 {
     pointer-events: none;
 }
 
+/* =========================
+   CONTROLES (joystick + botões)
+   Escondidos por padrão (desktop usa só o scroll do mouse).
+   Mostrados em telas touch / mobile via media queries abaixo.
+========================= */
+.controles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+    display: none;
+}
+
+.joystick {
+    position: absolute;
+    left: 20px;
+    bottom: 70px;
+    width: 120px;
+    height: 120px;
+    pointer-events: auto;
+    touch-action: none;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.joystick-base {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(4px);
+}
+
+.joystick-stick {
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    border: 2px solid rgba(255, 255, 255, 0.65);
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: background 0.1s;
+    pointer-events: none;
+}
+
+.joystick-stick.ativo {
+    background: rgba(255, 230, 150, 0.6);
+}
+
+.botoes {
+    position: absolute;
+    right: 20px;
+    bottom: 70px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    pointer-events: auto;
+}
+
+.btn {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+    font-size: 26px;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    font-family: inherit;
+}
+
+.btn:active {
+    background: rgba(255, 230, 150, 0.35);
+    transform: scale(0.94);
+}
+
 /* celular */
 /* =========================
    RESPONSIVO CELULAR
@@ -198,5 +286,31 @@ h2 {
         pointer-events: none;
     }
 
+    .controles {
+        display: block;
+    }
 
+    .joystick {
+        left: 16px;
+        bottom: 80px;
+        width: 110px;
+        height: 110px;
+    }
+
+    .joystick-stick {
+        width: 50px;
+        height: 50px;
+    }
+
+    .botoes {
+        right: 16px;
+        bottom: 80px;
+    }
+}
+
+/* Dispositivos touch (celular/tablet), mesmo em telas largas */
+@media (hover: none) and (pointer: coarse) {
+    .controles {
+        display: block;
+    }
 }
