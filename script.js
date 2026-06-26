@@ -146,7 +146,26 @@
         ligarBotao(btnMenos, -PASSO);
 
         const ehMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (ehMouse) {
+    
+        // ---------- setas do teclado ----------
+document.addEventListener('keydown', (event) => {
+    switch (event.key) {
+        case 'ArrowUp':
+        case 'ArrowRight':
+            value += 0.06;
+            updateOpacity();
+            event.preventDefault();
+            break;
+
+        case 'ArrowDown':
+        case 'ArrowLeft':
+            value -= 0.06;
+            updateOpacity();
+            event.preventDefault();
+            break;
+    }
+});
+        if (ehMouse) {
         document.addEventListener('pointermove', (e) => {
             if (e.pointerType !== 'mouse') return;
             posX = e.clientX;
